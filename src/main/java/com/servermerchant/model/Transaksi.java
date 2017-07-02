@@ -6,7 +6,7 @@
 
 package com.servermerchant.model;
 
-import java.sql.Timestamp;
+import java.util.Date;
 //import java.util.HashMap;
 
 /**
@@ -14,15 +14,15 @@ import java.sql.Timestamp;
  * @author Arina Listyarini DA
  */
 public class Transaksi {
-    private Timestamp waktu;
+    private Date waktu;
     private int nominal;
     //private HashMap<String, Integer> barangJumlah;
 
-    public Timestamp getWaktu() {
+    public Date getWaktu() {
         return waktu;
     }
 
-    public void setWaktu(Timestamp waktu) {
+    public void setWaktu(Date waktu) {
         this.waktu = waktu;
     }
 
