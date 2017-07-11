@@ -18,17 +18,20 @@ import javax.jws.WebService;
 public interface HelloService {
 
 	@WebMethod(operationName = "addTransaksi")
-        public Boolean addTransaksi(@WebParam(name = "nominal") int nominal, @WebParam(name = "barangJumlah") HashMap<String, Integer> barangJumlah);
+        public Boolean addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal, @WebParam(name = "barangJumlah") HashMap<String, Integer> barangJumlah);
         
         @WebMethod(operationName = "getListTransaksi")
         public ArrayList<Transaksi> getListTransaksi();
         
+        @WebMethod(operationName = "getTransaksiBarangByWaktu")
+        public ArrayList<TransaksiBarang> getTransaksiBarangByWaktu(@WebParam(name = "waktu")  String waktu);
+        
         @WebMethod(operationName = "getListBarang")
         public ArrayList<Barang> getListBarang();
         
-        @WebMethod(operationName = "getBarang")
-        public Barang getBarang(@WebParam(name = "idBarang") String idBarang);
+        /*@WebMethod(operationName = "getBarang")
+        public Barang getBarang(@WebParam(name = "idBarang") String idBarang);*/
         
-        @WebMethod(operationName = "getTransaksiBarangByIDTransaksi")
-        public ArrayList<TransaksiBarang> getTransaksiBarangByIDTransaksi(@WebParam(name = "idBarang") String idTransaksi);
+        /*@WebMethod(operationName = "getTransaksiBarangByIDTransaksi")
+        public ArrayList<TransaksiBarang> getTransaksiBarangByIDTransaksi(@WebParam(name = "idBarang") String idTransaksi);*/
 }

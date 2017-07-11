@@ -16,7 +16,16 @@ import java.util.Date;
 public class Transaksi {
     private Date waktu;
     private int nominal;
+    private String idKartu;
     //private HashMap<String, Integer> barangJumlah;
+
+    public String getIdKartu() {
+        return idKartu;
+    }
+
+    public void setIdKartu(String idKartu) {
+        this.idKartu = idKartu;
+    }
 
     public Date getWaktu() {
         return waktu;

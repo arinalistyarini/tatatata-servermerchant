@@ -29,7 +29,7 @@ public class HelloServiceImpl implements HelloService {
         private final String rootURL = "https://ta-merchant.firebaseio.com/";
 
 	@WebMethod(operationName = "addTransaksi")
-        public Boolean addTransaksi(@WebParam(name = "nominal") int nominal, @WebParam(name = "barangJumlah") HashMap<String, Integer> barangJumlah){
+        public Boolean addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal, @WebParam(name = "barangJumlah") HashMap<String, Integer> barangJumlah){
             Firebase ref = new Firebase(rootURL);
             
             //nulis transaksi
@@ -38,10 +38,17 @@ public class HelloServiceImpl implements HelloService {
             Firebase transaksiRef = ref.child(transaksiURL);
             Map<String, Object> transaction = new HashMap<String, Object>();
             transaction.put("nominal", nominal);
+            transaction.put("no_kartu", idKartu);
             transaksiRef.updateChildren(transaction);
             
             //nulis transaksi_barang
             //iterate hashmap barang_jumlah
+            /*if(barangJumlah.isEmpty()){
+                System.out.println("kosong");
+            }
+            else{
+                System.out.println("isi");
+            }*/
             Set set = barangJumlah.entrySet();
             Iterator i = set.iterator();
             while(i.hasNext()) {
@@ -93,21 +100,51 @@ public class HelloServiceImpl implements HelloService {
                     Transaksi transaksi = new Transaksi();
                     //transaksi.setBarangJumlah(null); --> dibikin method baru aja "getTransaksiBarangByIDTransaksi"
                     transaksi.setNominal(getTrans.getInt("nominal"));
-                    transaksi.setWaktu(new Date(Long.parseLong(getTrans.getString("waktu"))));
+                    transaksi.setIdKartu(getTrans.getString("no_kartu"));
+                    transaksi.setWaktu(new Date(Long.parseLong(waktu)));
                     t.add(transaksi);
                 }    
                 
                 return t;
             } catch (IOException ex) {
-                Logger.getLogger(HelloServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex);
             }
             return null;
         }
         
+        @WebMethod(operationName = "getTransaksiBarangByWaktu")
+        public ArrayList<TransaksiBarang> getTransaksiBarangByWaktu(@WebParam(name = "waktu")  String waktu){
+            try {
+                URL url = new URL(rootURL + "transaksi/" + waktu + "/transaksi_barang.json");
+                URLConnection con = url.openConnection();
+                JSONTokener json = new JSONTokener(con.getInputStream());
+                JSONObject obj = new JSONObject(json);
+                Iterator<String> data = obj.keys();
+                ArrayList<TransaksiBarang> t = new ArrayList<TransaksiBarang>();
+                                
+                while(data.hasNext()){
+                    String idTBrg = data.next();
+                    
+                    JSONObject getTrans = obj.getJSONObject(idTBrg);
+
+                    TransaksiBarang tb = new TransaksiBarang();
+                    tb.setIdBarang(getTrans.getString("id_barang"));
+                    tb.setIdTransaksiBarang(idTBrg);
+                    tb.setJumlah(getTrans.getInt("jumlah"));
+                    
+                    t.add(tb);                    
+                }                    
+                return t;
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
+            return null;
+    }
+        
         @WebMethod(operationName = "getListBarang")
         public ArrayList<Barang> getListBarang(){
             try {
-                URL url = new URL(rootURL + "transaksi.json");
+                URL url = new URL(rootURL + "barang.json");
                 URLConnection con = url.openConnection();
                 JSONTokener json = new JSONTokener(con.getInputStream());
                 JSONObject obj = new JSONObject(json);
@@ -121,19 +158,20 @@ public class HelloServiceImpl implements HelloService {
 
                     Barang barang = new Barang();
                     barang.setHarga(getBar.getInt("harga"));
-                    barang.setIdBarang(getBar.getString("id_barang"));
+                    barang.setIdBarang(idBar);
                     barang.setNamaBarang(getBar.getString("nama_barang"));
                     b.add(barang);
                 }    
                 
                 return b;
             } catch (IOException ex) {
-                Logger.getLogger(HelloServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex);
             }
             return null;
         }
         
-        @WebMethod(operationName = "getBarang")
+        //nanti
+        /*@WebMethod(operationName = "getBarang")
         public Barang getBarang(@WebParam(name = "idBarang") String idBarang){
             try {
                 URL url = new URL(rootURL + "barang/" + idBarang + ".json");
@@ -151,34 +189,7 @@ public class HelloServiceImpl implements HelloService {
                 Logger.getLogger(HelloServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
             return null;
-        }
+        }*/
         
-        @WebMethod(operationName = "getTransaksiBarangByIDTransaksi")
-        public ArrayList<TransaksiBarang> getTransaksiBarangByIDTransaksi(@WebParam(name = "idBarang") String idTransaksi){
-            try {
-                URL url = new URL(rootURL + "transaksi/" + idTransaksi + "/transaksi_barang.json");
-                URLConnection con = url.openConnection();
-                JSONTokener json = new JSONTokener(con.getInputStream());
-                JSONObject obj = new JSONObject(json);
-                Iterator<String> data = obj.keys();
-                ArrayList<TransaksiBarang> tb = new ArrayList<TransaksiBarang>();
-                                
-                while(data.hasNext()){
-                    String idTrans = data.next();
-                    
-                    JSONObject getBar = obj.getJSONObject(idTrans);
-                    TransaksiBarang transaksibarang = new TransaksiBarang();
-                    transaksibarang.setIdBarang(getBar.getString("id_barang"));
-                    transaksibarang.setIdTransaksiBarang(idTrans);
-                    transaksibarang.setJumlah(getBar.getInt("jumlah"));
-                    tb.add(transaksibarang);
-                }    
-                
-                return tb;
-            } catch (IOException ex) {
-                Logger.getLogger(HelloServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            return null;
-        }
+        
 }
