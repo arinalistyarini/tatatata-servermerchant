@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.chamerling.heroku.service;
+package org.chamerling.heroku.servicemerchant;
 
 import com.firebase.client.Firebase;
 import com.servermerchant.model.*;
@@ -14,8 +14,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import org.json.JSONObject;
@@ -29,7 +27,7 @@ public class HelloServiceImpl implements HelloService {
         private final String rootURL = "https://ta-merchant.firebaseio.com/";
 
 	@WebMethod(operationName = "addTransaksi")
-        public Boolean addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal, @WebParam(name = "barangJumlah") HashMap<String, Integer> barangJumlah){
+        public Boolean addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal, @WebParam(name = "barangJumlah") HashMapBarangJumlah barangJumlah){
             Firebase ref = new Firebase(rootURL);
             
             //nulis transaksi
@@ -49,7 +47,7 @@ public class HelloServiceImpl implements HelloService {
             else{
                 System.out.println("isi");
             }*/
-            Set set = barangJumlah.entrySet();
+            Set set = barangJumlah.getBarangJumlah().entrySet();
             Iterator i = set.iterator();
             while(i.hasNext()) {
                 Map.Entry me = (Map.Entry)i.next(); // untuk tau mpe index mana
@@ -83,7 +81,7 @@ public class HelloServiceImpl implements HelloService {
         }
         
         @WebMethod(operationName = "getListTransaksi")
-        public ArrayList<Transaksi> getListTransaksi(){
+        public ArrayTransaksi getListTransaksi(){
             try {
                 URL url = new URL(rootURL + "transaksi.json");
                 URLConnection con = url.openConnection();
@@ -103,9 +101,12 @@ public class HelloServiceImpl implements HelloService {
                     transaksi.setIdKartu(getTrans.getString("no_kartu"));
                     transaksi.setWaktu(new Date(Long.parseLong(waktu)));
                     t.add(transaksi);
-                }    
+                }
                 
-                return t;
+                ArrayTransaksi result = new ArrayTransaksi();
+                result.setTransaksis(t);
+                
+                return result;
             } catch (IOException ex) {
                 System.out.println(ex);
             }
@@ -113,7 +114,7 @@ public class HelloServiceImpl implements HelloService {
         }
         
         @WebMethod(operationName = "getTransaksiBarangByWaktu")
-        public ArrayList<TransaksiBarang> getTransaksiBarangByWaktu(@WebParam(name = "waktu")  String waktu){
+        public ArrayTransaksiBarang getTransaksiBarangByWaktu(@WebParam(name = "waktu")  String waktu){
             try {
                 URL url = new URL(rootURL + "transaksi/" + waktu + "/transaksi_barang.json");
                 URLConnection con = url.openConnection();
@@ -133,8 +134,11 @@ public class HelloServiceImpl implements HelloService {
                     tb.setJumlah(getTrans.getInt("jumlah"));
                     
                     t.add(tb);                    
-                }                    
-                return t;
+                }
+                ArrayTransaksiBarang result = new ArrayTransaksiBarang();
+                result.setTransaksiBarangs(t);
+                
+                return result;
             } catch (IOException ex) {
                 System.out.println(ex);
             }
@@ -142,7 +146,7 @@ public class HelloServiceImpl implements HelloService {
     }
         
         @WebMethod(operationName = "getListBarang")
-        public ArrayList<Barang> getListBarang(){
+        public ArrayBarang getListBarang(){
             try {
                 URL url = new URL(rootURL + "barang.json");
                 URLConnection con = url.openConnection();
@@ -163,7 +167,10 @@ public class HelloServiceImpl implements HelloService {
                     b.add(barang);
                 }    
                 
-                return b;
+                ArrayBarang result = new ArrayBarang();
+                result.setBarangs(b);
+                
+                return result;
             } catch (IOException ex) {
                 System.out.println(ex);
             }

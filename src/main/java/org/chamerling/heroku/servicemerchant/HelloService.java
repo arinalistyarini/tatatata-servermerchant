@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.chamerling.heroku.service;
+package org.chamerling.heroku.servicemerchant;
 
 import com.servermerchant.model.*;
 import java.util.ArrayList;
@@ -18,16 +18,16 @@ import javax.jws.WebService;
 public interface HelloService {
 
 	@WebMethod(operationName = "addTransaksi")
-        public Boolean addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal, @WebParam(name = "barangJumlah") HashMap<String, Integer> barangJumlah);
+        public Boolean addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal, @WebParam(name = "barangJumlah") HashMapBarangJumlah barangJumlah);
         
         @WebMethod(operationName = "getListTransaksi")
-        public ArrayList<Transaksi> getListTransaksi();
+        public ArrayTransaksi getListTransaksi();
         
         @WebMethod(operationName = "getTransaksiBarangByWaktu")
-        public ArrayList<TransaksiBarang> getTransaksiBarangByWaktu(@WebParam(name = "waktu")  String waktu);
+        public ArrayTransaksiBarang getTransaksiBarangByWaktu(@WebParam(name = "waktu")  String waktu);
         
         @WebMethod(operationName = "getListBarang")
-        public ArrayList<Barang> getListBarang();
+        public ArrayBarang getListBarang();
         
         /*@WebMethod(operationName = "getBarang")
         public Barang getBarang(@WebParam(name = "idBarang") String idBarang);*/
