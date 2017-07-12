@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.chamerling.heroku.service;
+package org.chamerling.heroku.servicemerchant;
 
 import com.servermerchant.model.*;
 import java.util.ArrayList;
