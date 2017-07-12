@@ -26,7 +26,7 @@ import org.json.JSONTokener;
 public class HelloServiceImpl implements HelloService {
         private final String rootURL = "https://ta-merchant.firebaseio.com/";
 
-	@WebMethod(operationName = "addTransaksi")
+	/*@WebMethod(operationName = "addTransaksi")
         public Boolean addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal, @WebParam(name = "barangJumlah") HashMapBarangJumlah barangJumlah){
             Firebase ref = new Firebase(rootURL);
             
@@ -41,12 +41,6 @@ public class HelloServiceImpl implements HelloService {
             
             //nulis transaksi_barang
             //iterate hashmap barang_jumlah
-            /*if(barangJumlah.isEmpty()){
-                System.out.println("kosong");
-            }
-            else{
-                System.out.println("isi");
-            }*/
             Set set = barangJumlah.getBarangJumlah().entrySet();
             Iterator i = set.iterator();
             while(i.hasNext()) {
@@ -61,26 +55,11 @@ public class HelloServiceImpl implements HelloService {
                 transactionB.put("jumlah", (Integer) me.getValue());
                 transaksiBRef.updateChildren(transactionB);
             }
-            
-            /*//nulis transaksi_barang
-            Map<String, Object> transactionBarang = new HashMap<String, Object>();
-            String transaksiBarangURL = "transaksi_barang/" + System.currentTimeMillis();
-            Firebase transaksiBarangRef = ref.child(transaksiBarangURL);
-            Map<String, Object> transactionBarang = new HashMap<String, Object>();
-            
-            //iterate hashmap barang_jumlah
-            Set set = barang_jumlah.entrySet();
-            Iterator i = set.iterator();
-            while(i.hasNext()) {
-                Map.Entry me = (Map.Entry)i.next(); // untuk tau mpe index mana
-                transactionBarang.put((String) me.getKey(), (Integer) me.getValue());
-            }
-            transaksiBarangRef.updateChildren(transactionBarang);*/
-            
+                        
             return true;
-        }
+        }*/
         
-        /*@WebMethod(operationName = "getListTransaksi")
+        @WebMethod(operationName = "getListTransaksi")
         public ArrayTransaksi getListTransaksi(){
             try {
                 URL url = new URL(rootURL + "transaksi.json");
@@ -113,7 +92,7 @@ public class HelloServiceImpl implements HelloService {
             return null;
         }
         
-        @WebMethod(operationName = "getTransaksiBarangByWaktu")
+        /*@WebMethod(operationName = "getTransaksiBarangByWaktu")
         public ArrayTransaksiBarang getTransaksiBarangByWaktu(@WebParam(name = "waktu")  String waktu){
             try {
                 URL url = new URL(rootURL + "transaksi/" + waktu + "/transaksi_barang.json");
