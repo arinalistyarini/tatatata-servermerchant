@@ -80,7 +80,7 @@ public class HelloServiceImpl implements HelloService {
             return true;
         }
         
-        @WebMethod(operationName = "getListTransaksi")
+        /*@WebMethod(operationName = "getListTransaksi")
         public ArrayTransaksi getListTransaksi(){
             try {
                 URL url = new URL(rootURL + "transaksi.json");
@@ -175,7 +175,7 @@ public class HelloServiceImpl implements HelloService {
                 System.out.println(ex);
             }
             return null;
-        }
+        }*/
         
         //nanti
         /*@WebMethod(operationName = "getBarang")
