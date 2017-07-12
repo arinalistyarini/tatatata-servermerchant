@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.chamerling.heroku.servicemerchant;
+package org.chamerling.heroku.service;
 
 import com.firebase.client.Firebase;
 import com.servermerchant.model.*;
