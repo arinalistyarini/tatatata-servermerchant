@@ -4,6 +4,7 @@
 package org.chamerling.heroku.servicemerchant;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.servermerchant.model.*;
 import java.io.IOException;
 import java.net.URL;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Semaphore;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import org.json.JSONObject;
@@ -30,12 +32,7 @@ public class HelloServiceImpl implements HelloService {
         public Boolean addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal, @WebParam(name = "barangJumlah") HashMapBarangJumlah barangJumlah){
             Firebase ref = new Firebase(rootURL);
             
-            if(barangJumlah.getBarangJumlah().isEmpty()){
-                System.out.println("kosong222");
-            }
-            else{
-                System.out.println("isi2222");
-            }
+            final Semaphore semaphore = new Semaphore(0);
             
             //nulis transaksi
             String waktu = System.currentTimeMillis() + "";
@@ -44,17 +41,17 @@ public class HelloServiceImpl implements HelloService {
             Map<String, Object> transaction = new HashMap<String, Object>();
             transaction.put("nominal", nominal);
             transaction.put("no_kartu", idKartu);
-            transaksiRef.updateChildren(transaction);
+            transaksiRef.updateChildren(transaction, new Firebase.CompletionListener() {
+                @Override
+                public void onComplete(FirebaseError error, Firebase ref) {
+                    semaphore.release();
+                }
+            });
             
             //nulis transaksi_barang
             //iterate hashmap barang_jumlah
             Set set = barangJumlah.getBarangJumlah().entrySet();
-            if(barangJumlah.getBarangJumlah().isEmpty()){
-                System.out.println("kosong");
-            }
-            else{
-                System.out.println("isi");
-            }
+            
             Iterator i = set.iterator();
             while(i.hasNext()) {
                 Map.Entry me = (Map.Entry)i.next(); // untuk tau mpe index mana
@@ -66,7 +63,12 @@ public class HelloServiceImpl implements HelloService {
                 Map<String, Object> transactionB = new HashMap<String, Object>();
                 transactionB.put("id_barang", (String) me.getKey());
                 transactionB.put("jumlah", (Integer) me.getValue());
-                transaksiBRef.updateChildren(transactionB);
+                transaksiBRef.updateChildren(transactionB, new Firebase.CompletionListener() {
+                    @Override
+                    public void onComplete(FirebaseError error, Firebase ref) {
+                        semaphore.release();
+                    }
+                });
             }
                         
             return true;
