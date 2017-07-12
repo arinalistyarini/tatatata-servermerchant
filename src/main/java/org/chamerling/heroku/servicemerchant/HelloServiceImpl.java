@@ -30,6 +30,13 @@ public class HelloServiceImpl implements HelloService {
         public Boolean addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal, @WebParam(name = "barangJumlah") HashMapBarangJumlah barangJumlah){
             Firebase ref = new Firebase(rootURL);
             
+            if(barangJumlah.getBarangJumlah().isEmpty()){
+                System.out.println("kosong222");
+            }
+            else{
+                System.out.println("isi2222");
+            }
+            
             //nulis transaksi
             String waktu = System.currentTimeMillis() + "";
             String transaksiURL = "transaksi/" + waktu; // timestamp
@@ -42,6 +49,12 @@ public class HelloServiceImpl implements HelloService {
             //nulis transaksi_barang
             //iterate hashmap barang_jumlah
             Set set = barangJumlah.getBarangJumlah().entrySet();
+            if(barangJumlah.getBarangJumlah().isEmpty()){
+                System.out.println("kosong");
+            }
+            else{
+                System.out.println("isi");
+            }
             Iterator i = set.iterator();
             while(i.hasNext()) {
                 Map.Entry me = (Map.Entry)i.next(); // untuk tau mpe index mana
