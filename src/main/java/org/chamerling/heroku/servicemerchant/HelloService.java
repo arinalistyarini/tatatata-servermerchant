@@ -16,7 +16,9 @@ import javax.jws.WebService;
 public interface HelloService {
 
 	@WebMethod(operationName = "addTransaksi")
-        public Boolean addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal, @WebParam(name = "barangJumlah") HashMapBarangJumlah barangJumlah);
+        public String addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal);
+        
+        public Boolean addTransaksiBarangJumlah(@WebParam(name = "waktu") String waktu, @WebParam(name = "idBarang") String idBarang, @WebParam(name = "jumlah") String jumlah);
         
         @WebMethod(operationName = "getListTransaksi")
         public ArrayTransaksi getListTransaksi();

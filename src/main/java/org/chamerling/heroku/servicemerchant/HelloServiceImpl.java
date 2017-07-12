@@ -29,10 +29,8 @@ public class HelloServiceImpl implements HelloService {
         private final String rootURL = "https://ta-merchant.firebaseio.com/";
 
 	@WebMethod(operationName = "addTransaksi")
-        public Boolean addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal, @WebParam(name = "barangJumlah") HashMapBarangJumlah barangJumlah){
+        public String addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal){
             Firebase ref = new Firebase(rootURL);
-            
-            final Semaphore semaphore = new Semaphore(0);
             
             //nulis transaksi
             String waktu = System.currentTimeMillis() + "";
@@ -41,14 +39,9 @@ public class HelloServiceImpl implements HelloService {
             Map<String, Object> transaction = new HashMap<String, Object>();
             transaction.put("nominal", nominal);
             transaction.put("no_kartu", idKartu);
-            transaksiRef.updateChildren(transaction, new Firebase.CompletionListener() {
-                @Override
-                public void onComplete(FirebaseError error, Firebase ref) {
-                    semaphore.release();
-                }
-            });
+            transaksiRef.updateChildren(transaction);
             
-            //nulis transaksi_barang
+            /*//nulis transaksi_barang
             //iterate hashmap barang_jumlah
             Set set = barangJumlah.getBarangJumlah().entrySet();
             
@@ -69,8 +62,29 @@ public class HelloServiceImpl implements HelloService {
                         semaphore.release();
                     }
                 });
-            }
+            }*/
                         
+            return waktu;
+        }
+        
+        @WebMethod(operationName = "addTransaksiBarangJumlah")
+        public Boolean addTransaksiBarangJumlah(@WebParam(name = "waktu") String waktu, @WebParam(name = "idBarang") String idBarang, @WebParam(name = "jumlah") String jumlah){
+            //nulis transaksi_barang_jumlah
+            
+            Firebase ref = new Firebase(rootURL);
+            
+            String transaksiURL = "transaksi/" + waktu; // timestamp
+            Firebase transaksiRef = ref.child(transaksiURL);
+            
+            //transaction.put((String) me.getKey(), (Integer) me.getValue());  // string: id_barang, int: jumlah barang yang dibeli
+            String key = transaksiRef.push().getKey();
+            String transaksiBarangURL = "transaksi/" + waktu + "/transaksi_barang/" + key;
+            Firebase transaksiBRef = ref.child(transaksiBarangURL);
+                
+            Map<String, Object> transactionB = new HashMap<String, Object>();
+            transactionB.put("id_barang", idBarang);
+            transactionB.put("jumlah", jumlah);
+            transaksiBRef.updateChildren(transactionB);
             return true;
         }
         
