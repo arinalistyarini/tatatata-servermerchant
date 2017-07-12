@@ -4,8 +4,6 @@
 package org.chamerling.heroku.servicemerchant;
 
 import com.servermerchant.model.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
