@@ -21,6 +21,6 @@
 	<import resource="classpath:META-INF/cxf/cxf-extension-http.xml" />
 
 	<jaxws:endpoint id="hello"
-		implementor="org.chamerling.heroku.servicemerchant.HelloServiceImpl" address="/HelloService" />
+		implementor="com.servermerchant.webservice.HelloServiceImpl" address="/HelloService" />
 
 </beans>

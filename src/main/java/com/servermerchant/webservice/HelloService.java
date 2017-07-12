@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.chamerling.heroku.servicemerchant;
+package com.servermerchant.webservice;
 
 import com.servermerchant.model.*;
 import javax.jws.WebMethod;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.chamerling.heroku.servicemerchant;
+package com.servermerchant.webservice;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
