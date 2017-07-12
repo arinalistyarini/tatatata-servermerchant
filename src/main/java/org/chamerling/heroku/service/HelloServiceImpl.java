@@ -26,7 +26,7 @@ import org.json.JSONTokener;
 public class HelloServiceImpl implements HelloService {
         private final String rootURL = "https://ta-merchant.firebaseio.com/";
 
-	/*@WebMethod(operationName = "addTransaksi")
+	@WebMethod(operationName = "addTransaksi")
         public Boolean addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal, @WebParam(name = "barangJumlah") HashMapBarangJumlah barangJumlah){
             Firebase ref = new Firebase(rootURL);
             
@@ -57,7 +57,7 @@ public class HelloServiceImpl implements HelloService {
             }
                         
             return true;
-        }*/
+        }
         
         @WebMethod(operationName = "getListTransaksi")
         public ArrayTransaksi getListTransaksi(){
@@ -92,7 +92,7 @@ public class HelloServiceImpl implements HelloService {
             return null;
         }
         
-        /*@WebMethod(operationName = "getTransaksiBarangByWaktu")
+        @WebMethod(operationName = "getTransaksiBarangByWaktu")
         public ArrayTransaksiBarang getTransaksiBarangByWaktu(@WebParam(name = "waktu")  String waktu){
             try {
                 URL url = new URL(rootURL + "transaksi/" + waktu + "/transaksi_barang.json");
@@ -154,7 +154,7 @@ public class HelloServiceImpl implements HelloService {
                 System.out.println(ex);
             }
             return null;
-        }*/
+        }
         
         //nanti
         /*@WebMethod(operationName = "getBarang")
