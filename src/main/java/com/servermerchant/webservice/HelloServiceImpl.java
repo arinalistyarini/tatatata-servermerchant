@@ -33,7 +33,7 @@ public class HelloServiceImpl implements HelloService {
             Firebase ref = new Firebase(rootURL);
             
             //nulis transaksi
-            String waktu = System.currentTimeMillis() + "";
+            String waktu = System.currentTimeMillis()/1000 + "";
             String transaksiURL = "transaksi/" + waktu; // timestamp
             Firebase transaksiRef = ref.child(transaksiURL);
             Map<String, Object> transaction = new HashMap<String, Object>();
@@ -107,7 +107,7 @@ public class HelloServiceImpl implements HelloService {
                     //transaksi.setBarangJumlah(null); --> dibikin method baru aja "getTransaksiBarangByIDTransaksi"
                     transaksi.setNominal(getTrans.getInt("nominal"));
                     transaksi.setIdKartu(getTrans.getString("no_kartu"));
-                    transaksi.setWaktu(new Date(Long.parseLong(waktu)));
+                    transaksi.setWaktu(new Date(Long.parseLong(waktu + "000")));
                     t.add(transaksi);
                 }
                 
