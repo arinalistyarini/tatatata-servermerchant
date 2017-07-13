@@ -18,6 +18,8 @@ public interface HelloService {
 	@WebMethod(operationName = "addTransaksi")
         public String addTransaksi(@WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal);
         
+        public String addTransaksiParamWaktu(@WebParam(name = "waktu") String waktu, @WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal);
+        
         public Boolean addTransaksiBarangJumlah(@WebParam(name = "waktu") String waktu, @WebParam(name = "idBarang") String idBarang, @WebParam(name = "jumlah") String jumlah);
         
         @WebMethod(operationName = "getListTransaksi")

@@ -67,6 +67,20 @@ public class HelloServiceImpl implements HelloService {
             return waktu;
         }
         
+        public String addTransaksiParamWaktu(@WebParam(name = "waktu") String waktu, @WebParam(name = "idKartu") String idKartu, @WebParam(name = "nominal") int nominal){
+            Firebase ref = new Firebase(rootURL);
+            
+            //nulis transaksi
+            String transaksiURL = "transaksi/" + waktu; // timestamp
+            Firebase transaksiRef = ref.child(transaksiURL);
+            Map<String, Object> transaction = new HashMap<String, Object>();
+            transaction.put("nominal", nominal);
+            transaction.put("no_kartu", idKartu);
+            transaksiRef.updateChildren(transaction);
+                        
+            return waktu;
+        }
+        
         @WebMethod(operationName = "addTransaksiBarangJumlah")
         public Boolean addTransaksiBarangJumlah(@WebParam(name = "waktu") String waktu, @WebParam(name = "idBarang") String idBarang, @WebParam(name = "jumlah") String jumlah){
             //nulis transaksi_barang_jumlah
